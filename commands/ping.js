@@ -1,13 +1,11 @@
 module.exports = {
-    name: ['ping', 'latency'],
+    name: 'ping',
 
     description: 'Get the bot and websocket latency',
 
 
-    execute(message, args) {
-        message.channel.send('Loading data').then (async (msg) =>{
-            msg.delete()
-            message.channel.send(`🏓Latency is ${msg.createdTimestamp - message.createdTimestamp}ms.\nAPI Latency is ${Math.round(client.ws.ping)}ms`);
-        })
+    async execute(message, args, client) {
+            const pong = await message.channel.send('Loading data');
+            await pong.edit(`🏓Latency is ${pong.createdTimestamp - message.createdTimestamp}ms.\nAPI Latency is ${Math.round(client.ws.ping)}ms`);
     },
 };
