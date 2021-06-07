@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'serverinfo',
 
+    aliases: ['si', 'guildinfo'],
+
     description: 'Get the guild\'s info',
 
 
