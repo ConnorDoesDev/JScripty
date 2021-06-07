@@ -1,4 +1,5 @@
 const { prefix } = require('../../config.json');
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'help',
@@ -10,19 +11,16 @@ module.exports = {
         const { commands } = message.client;
 
         if (!args.length) {
-            data.push('Here\'s a list of all my commands:');
-            data.push(commands.map(command => command.name).join(', '));
-            data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+            //data.push('Here\'s a list of all my commands:');
+            data.push( "`" + commands.map(command => command.name).join('`, `') + "`");
+            //data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-            message.reply(data, {split: true})
-                .then(() => {
-                    //if (message.channel.type === 'dm') return;
-                    //message.reply('I\'ve sent you a DM with all my commands!');
-                })
-                .catch(error => {
-                    console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
-                });
+            const embed = new Discord.MessageEmbed()
+                .setTitle(`JScripty commands | Prefix ${prefix}`)
+                .setDescription(data)
+                .setTimestamp()
+                .setFooter(`Command executed by ${message.author.tag}`)
+            message.channel.send(embed)// {split: true})
 
         } else {
             const name = args[0].toLowerCase();
