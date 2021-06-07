@@ -8,6 +8,16 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const prefix = config.prefix
 
+const commandFolders = fs.readdirSync('./commands');
+
+for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+        const command = require(`./commands/${folder}/${file}`);
+        client.commands.set(command.name, command);
+    }
+}
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -26,52 +36,25 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
+    const commandName = args.shift().toLowerCase();
 
-    if (!client.commands.has(command)) return;
+    if (!client.commands.has(commandName)) return;
+
+    const command = client.commands.get(commandName)
+        || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+    if (!command) return;
+
+    if (command.args && !args.length) {
+        return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+    }
 
     try {
-        client.commands.get(command).execute(message, args, client);
+        command.execute(message, args, client);
     } catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
     }
 });
-
-//client.on('message', message => {
-
-    //const guild = message.guild;
-
-    //let generic = '';
-        //generic += `**Owner:** <@!${guild.ownerID}> \n`;
-        //generic += `**Owner ID:** ${guild.ownerID} \n`;
-        //generic += `**Created:** ${guild.createdAt.toDateString()} \n`;
-        //generic += `**Guild ID:** ${guild.id} \n`;
-
-    //let statistics = '';
-        //statistics += `**Members:** ${guild.memberCount} \n`;
-        //statistics += `**Max members:** ${guild.maximumMembers} \n`;
-        //statistics += `**Verified:** ${guild.verified ? 'Yes' : 'No'} \n`;
-        //statistics += `**Partnered:** ${guild.partnered ? 'Yes' : 'No'} \n`;
-
-    //const features = guild.features.map(feature => util.toTitleCase(feature.replace(/[-_]/g, ' ')));
-
-//    if (message.content === prefix + 'si') {
-//        const e = new Discord.MessageEmbed()
-//            .setTitle(`Info ${message.guild.name}`)
-//            .setThumbnail(guild.iconURL({dynamic: true, size: 2048}))
-//            .setColor(0xf04747)
-//            .setTimestamp()
-//            .setFooter(`Command executed by ${message.author.tag}`)
-//            .addFields(
-//                /** @type {any} */ {name: '__**Generic**__', value: generic, inline: true},
-//                /** @type {any} */ {name: '__**Statistics**__', value: statistics, inline: true },
-//                /** @type {any} */ {name: '__**Features**__', value: features.join(', ') || 'None', inline: false }
-//            )
-//        message.channel.send(e)
-//    }
-//});
-
-//client.on('message')
 
 client.login(config.token);
