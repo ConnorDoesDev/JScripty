@@ -1,6 +1,8 @@
 module.exports = {
     name: 'ping',
 
+    aliases: ['latency', 'ping'],
+
     description: 'Get the bot and websocket latency',
 
 
