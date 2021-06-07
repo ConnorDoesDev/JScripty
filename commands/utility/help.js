@@ -14,7 +14,7 @@ module.exports = {
             data.push(commands.map(command => command.name).join(', '));
             data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-            return message.reply(data, { split: true })
+            message.reply(data, {split: true})
                 .then(() => {
                     //if (message.channel.type === 'dm') return;
                     //message.reply('I\'ve sent you a DM with all my commands!');
@@ -24,6 +24,7 @@ module.exports = {
                     message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
                 });
 
+        } else {
             const name = args[0].toLowerCase();
             const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
