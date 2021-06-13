@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const util = require('../../util.js')
 
 module.exports = {
 
@@ -20,31 +21,39 @@ module.exports = {
         generic += `**role name:** ${role.name} (${role.id})\n`;
         generic += `**Created on** ${role.createdAt.toUTCString()}\n`;
         generic += `**From guild:** ${role.guild}\n`
+        generic += `**Managed:** ${role.managed ? 'Yes' : 'No'}\n`
+        generic += `**Position:** ${role.position} (from below)\n`
+        generic += `**Hoisted:** ${role.hoist ? 'Yes' : 'No'}\n`
+        generic += `**Color:** \`${role.hexColor}\` (\`${role.color}\`)`
 
         console.log(role)
         let permissions;
-        try {
             if (role.permissions.has('ADMINISTRATOR')) {
                 permissions = `Administrator`
             } if (!role.permissions.has('ADMINISTRATOR')) {
                 permissions = role.permissions.toArray().toString()
                 permissions = permissions.toLowerCase()
                 permissions = permissions.replace(/[-_]/g, ' ')
+                permissions = permissions.replace(/[,]/g, ", ")
                 //permission => util.toTitleCase(permission.replace(/[-_]/g, ' '))
-            }
-        } catch (e) {
-            permissions = `None`
-        }
+            } if (!permissions) {
+                permissions = `None`
 
+        }
 
             const e = new Discord.MessageEmbed()
                 .setTitle(`About role ${role.name}`)
                 .setColor(role.color)
-                .addFields(
-                    /** @type {any} */ {name: '__**Generic**__', value: generic, inline: true},
-                    /** @type {any} */ {name: '__**Permissions**__', value: permissions, inline: true},
-                    // /** @type {any} */ {name: '__**Features**__', value: features.join(', ') || 'None', inline: false }
-                )
+                .setDescription(`
+${generic}
+
+**permissions:** ${permissions}
+                `)
+                //.addFields(
+                //    /** @type {any} */ {name: '__**Generic**__', value: generic, inline: true},
+                //    /** @type {any} */ {name: '__**Permissions**__', value: permissions, inline: true},
+                //    /** @type {any} */ {name: '__**Features**__', value: features.join(', ') || 'None', inline: false }
+                //)
 
             await message.channel.send(e)
 
