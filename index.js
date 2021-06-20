@@ -28,7 +28,7 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-    client.user.setPresence( { activity: { type: 'WATCHING', name: 'Myself' }, status: 'online' } )
+    client.user.setPresence( { activity: { type: 'WATCHING', name: 'my prefix (;)' }, status: 'dnd' } )
     console.log('I am ready!');
 });
 
