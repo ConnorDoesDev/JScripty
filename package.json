@@ -1,0 +1,23 @@
+{
+  "name": "jscripty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlitzDev/JScripty.git"
+  },
+  "author": "Joshua Slui",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/FlitzDev/JScripty/issues"
+  },
+  "homepage": "https://github.com/FlitzDev/JScripty#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "file-system": "^2.2.2"
+  }
+}
