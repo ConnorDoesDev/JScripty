@@ -1,8 +1,10 @@
+const Discord = require('Discord.js');
+
 const util = {};
 
-//util.toTitleCase = (s) => {
-//    return s.toLowerCase().replace(/^(\w)|\s(\w)/g, c => c.toUpperCase());
-//}
+util.toTitleCase = (s) => {
+    return s.toLowerCase().replace(/^(\w)|\s(\w)/g, c => c.toUpperCase());
+}
 
 /**
  * Converts a role mention (<@&roleId>) or role id to a role id
@@ -20,3 +22,5 @@ util.roleMentionToId = (mention) => {
         return null;
     }
 };
+
+module.exports = util;
