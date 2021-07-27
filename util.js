@@ -1,5 +1,3 @@
-const Discord = require('Discord.js');
-
 const util = {};
 
 util.toTitleCase = (s) => {
